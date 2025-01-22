@@ -2,7 +2,7 @@
 {
     public class ConnectionStrings
     {
-        private const string Server = "Server=DESKTOP-BHNAPDK;Database=NexsusLojiTurk;Integrated Security=True;TrustServerCertificate=True";
+        private const string Server = "N/A";
 
         public const string AppConnectionString = Server;
     }

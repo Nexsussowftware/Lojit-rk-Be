@@ -4,7 +4,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services;
-using Services.Auth;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,8 +56,6 @@ builder.Services.AddAuthorization();
 
 
 
-//Eklenecek olan kayýt satýrý.
-builder.Services.AddTransient<IAuthService, AuthService>();
 
 
 
