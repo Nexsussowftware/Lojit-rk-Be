@@ -20,5 +20,7 @@ namespace Core.Domains.User
         /// <summary/>
         public string UserTypeName { get; set; }
         //====================================================================================================
+        public String? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

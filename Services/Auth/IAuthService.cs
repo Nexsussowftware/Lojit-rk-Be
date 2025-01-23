@@ -1,5 +1,6 @@
-﻿using Core.Auth;
-using Core.Domains.User;
+﻿using Core.Domains.User;
+using Core.Dtos;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Services.Auth
 {
     public interface IAuthService
     {
-        public Task<UserLoginResponse> LoginUserAsync(ApplicationUser request);
+        public Task<IdentityResult> LoginUserAsync(UserForRegistrationDto request);
+        Task<TokenDto> CreateToken(bool populateExp);
+
     }
 }
