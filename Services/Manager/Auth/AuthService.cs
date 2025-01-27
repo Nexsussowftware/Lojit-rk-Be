@@ -1,6 +1,8 @@
-﻿using Core.Domains.User;
+﻿using AutoMapper;
+using Core.Domains.User;
 using Core.Dtos;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -11,49 +13,54 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Auth
+namespace Services.Manager.Auth
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private ApplicationUser? _user;
+        private readonly UserManager<Driver> _userManager;
+        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
+        //private Driver? _user;
 
 
-        public AuthService(UserManager<ApplicationUser> userManager)
+
+        public AuthService(UserManager<Driver> userManager, IConfiguration configuration, IMapper mapper)
         {
             _userManager = userManager;
+            _configuration = configuration;
+            _mapper = mapper;
         }
 
         //public async Task<TokenDto> (bool populateExp)
         //{
-            //var signinCredentials = GetSiginCredentials();
-            //var claims = await GetClaims();
-            //var tokenOptions = GenerateTokenOptions(signinCredentials, claims);
+        //var signinCredentials = GetSiginCredentials();
+        //var claims = await GetClaims();
+        //var tokenOptions = GenerateTokenOptions(signinCredentials, claims);
 
-            //var refreshToken = GenerateRefreshToken();
-            //_user.RefreshToken = refreshToken;
+        //var refreshToken = GenerateRefreshToken();
+        //_user.RefreshToken = refreshToken;
 
-            //if (populateExp)
-            //    _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+        //if (populateExp)
+        //    _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
 
-            //await _userManager.UpdateAsync(_user);
+        //await _userManager.UpdateAsync(_user);
 
-            //var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            //return new TokenDto()
-            //{
-            //    AccessToken = accessToken,
-            //    RefreshToken = refreshToken
-            //};
+        //var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        //return new TokenDto()
+        //{
+        //    AccessToken = accessToken,
+        //    RefreshToken = refreshToken
+        //};
         //}
 
-        public async Task<IdentityResult> LoginUserAsync(UserForRegistrationDto request)
+        public async Task<IdentityResult> RegisterUser(UserForRegistrationDto request)
         {
-            _user.UserName = request.FirstName;
-            
-            var result = await _userManager.CreateAsync(_user, request.Password);
+            var user = _mapper.Map<Driver>(request);
+
+            var result = await _userManager.CreateAsync(user, request.Password);
 
             if (result.Succeeded)
-                await _userManager.AddToRolesAsync(_user, request.Roles);
+                await _userManager.AddToRolesAsync(user, request.Roles);
             return result;
         }
 

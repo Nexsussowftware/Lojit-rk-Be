@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Auth
+namespace Services.Manager.Auth
 {
     public interface IAuthService
     {
-        public Task<IdentityResult> LoginUserAsync(UserForRegistrationDto request);
+        Task<IdentityResult> RegisterUser(UserForRegistrationDto request);
         Task<TokenDto> CreateToken(bool populateExp);
 
     }

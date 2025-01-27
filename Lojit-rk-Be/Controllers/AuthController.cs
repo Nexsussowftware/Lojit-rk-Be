@@ -1,9 +1,8 @@
-﻿using Core.Auth;
-using Core.Domains.User;
+﻿using Core.Domains.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services.Auth;
+using Services.Manager.Auth;
 
 namespace Lojit_rk_Be.Controllers
 {
@@ -18,13 +17,5 @@ namespace Lojit_rk_Be.Controllers
             _authService = authService;
         }
 
-        [HttpPost("LoginUser")]
-        [AllowAnonymous]
-        public async Task<ActionResult<UserLoginResponse>> LoginUserAsync([FromBody] ApplicationUser request)
-        {
-            var result = await _authService.LoginUserAsync(request);
-
-            return result;
-        }
     }
 }

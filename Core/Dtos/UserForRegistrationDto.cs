@@ -9,9 +9,11 @@ namespace Core.Dtos
 {
     public class UserForRegistrationDto
     {
-        public string FirstName { get; set; }
+        [Required(ErrorMessage ="Zorunlu")]
+        public string FirstName { get; init; }
         //====================================================================================================
-        public string Password { get; set; }
+        [Required(ErrorMessage ="Zorunlu")]
+        public string Password { get; init; }
         //====================================================================================================
         public ICollection<string>? Roles { get; init; }
 

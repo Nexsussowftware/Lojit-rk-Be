@@ -4,7 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services;
-using Services.Auth;
+using Services.Manager.Auth;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +24,8 @@ builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApplicationServices();
 builder.Services.AddMyIdentity();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Localizer
 builder.Services.AddLocalization();
@@ -31,27 +33,10 @@ builder.Services.AddControllersWithViews().AddViewLocalization();
 
 
 //builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-// Jwt Service
 
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ClockSkew = TimeSpan.Zero
-    };
-});
+
+// Jwt Service
+builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddAuthorization();
 
 
